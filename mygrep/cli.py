@@ -15,17 +15,25 @@ def parse_args():
     Supported arguments
     -------------------
     pattern : str (positional)
-        The search pattern (string to look for).
+        The search pattern (string or regex to look for).
     files : list[str] (positional)
-        One or more files to search in.
+        One or more files or directories to search in.
     -n / --line-number : bool
         Prefix each output line with its 1-based line number.
     -i / --ignore-case : bool
-        Accepted by the parser but not yet functional (Phase 2).
+        Case-insensitive matching.
     -v / --invert-match : bool
-        Accepted by the parser but not yet functional (Phase 2).
+        Select non-matching lines.
     -c / --count : bool
-        Accepted by the parser but not yet functional (Phase 2).
+        Print only a count of matching lines per file.
+    -E / --regex : bool
+        Treat the pattern as a regular expression.
+    -r / --recursive : bool
+        Recursively search directories.
+    --color : str
+        Highlight matching text (auto, always, never).
+    --algorithm : str
+        String matching algorithm to use (naive, kmp, boyer-moore).
 
     Returns
     -------
@@ -40,17 +48,17 @@ def parse_args():
     # Positional: the pattern to search for.
     parser.add_argument(
         "pattern",
-        help="The search pattern (string to search for)",
+        help="The search pattern (string or regular expression)",
     )
 
     # Positional: one or more file paths.
     parser.add_argument(
         "files",
         nargs="+",
-        help="One or more files to search in",
+        help="One or more files or directories to search in",
     )
 
-    # Optional flags — only -n is fully implemented in Phase 1.
+    # Optional flags.
     parser.add_argument(
         "-n", "--line-number",
         action="store_true",
@@ -70,6 +78,28 @@ def parse_args():
         "-c", "--count",
         action="store_true",
         help="Print only a count of matching lines per file",
+    )
+    parser.add_argument(
+        "-E", "--regex",
+        action="store_true",
+        help="Treat the pattern as a regular expression",
+    )
+    parser.add_argument(
+        "-r", "--recursive",
+        action="store_true",
+        help="Recursively search directories",
+    )
+    parser.add_argument(
+        "--color",
+        choices=["auto", "always", "never"],
+        default="auto",
+        help="Highlight matching text: auto (default), always, or never",
+    )
+    parser.add_argument(
+        "--algorithm",
+        choices=["naive", "kmp", "boyer-moore"],
+        default="naive",
+        help="String matching algorithm: naive (default), kmp, or boyer-moore",
     )
 
     return parser.parse_args()
