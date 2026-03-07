@@ -1,17 +1,8 @@
-def naive_search(text, pattern):
-    """
-    Returns True if pattern exists in text
-    """
-    n = len(text)
-    m = len(pattern)
+# DEPRECATED: The naive_search function has moved to mygrep/matcher.py.
+# This file is kept for backward compatibility only.
+# Please use `from mygrep.matcher import naive_search` in new code.
 
-    for i in range(n - m + 1):
-        match = True
-        for j in range(m):
-            if text[i + j] != pattern[j]:
-                match = False
-                break
-        if match:
-            return True
+from mygrep.matcher import naive_search  # re-export from new location
 
-    return False
+__all__ = ["naive_search"]
+
