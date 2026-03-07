@@ -34,8 +34,30 @@ python main.py "hello" sample.txt
 # Show line numbers with -n
 python main.py -n "pattern" sample.txt
 
+# Case-insensitive search with -i
+python main.py -i "Hello" sample.txt
+
+# Invert match (show non-matching lines) with -v
+python main.py -v "hello" sample.txt
+
+# Count matching lines with -c
+python main.py -c "hello" sample.txt
+
+# Regex search with -E
+python main.py -E "hel+o" sample.txt
+
+# Recursive directory search with -r
+python main.py -r "pattern" src/
+
+# Color output
+python main.py --color always "hello" sample.txt
+
 # Search multiple files at once
 python main.py "hello" file1.txt file2.txt
+
+# Use KMP or Boyer-Moore algorithm
+python main.py --algorithm kmp "pattern" sample.txt
+python main.py --algorithm boyer-moore "pattern" sample.txt
 
 # Show all available options
 python main.py --help
@@ -45,15 +67,21 @@ python main.py --help
 
 ```
 positional arguments:
-  pattern              The search pattern (string to search for)
-  files                One or more files to search in
+  pattern               The search pattern (string or regular expression)
+  files                 One or more files or directories to search in
 
 optional arguments:
-  -h, --help           Show this help message and exit
-  -n, --line-number    Prefix each output line with its line number
-  -i, --ignore-case    Case-insensitive matching (Phase 2)
-  -v, --invert-match   Select non-matching lines (Phase 2)
-  -c, --count          Print only a count of matching lines per file (Phase 2)
+  -h, --help            Show this help message and exit
+  -n, --line-number     Prefix each output line with its line number
+  -i, --ignore-case     Case-insensitive matching
+  -v, --invert-match    Select non-matching lines
+  -c, --count           Print only a count of matching lines per file
+  -E, --regex           Treat the pattern as a regular expression
+  -r, --recursive       Recursively search directories
+  --color {auto,always,never}
+                        Highlight matching text (default: auto)
+  --algorithm {naive,kmp,boyer-moore}
+                        String matching algorithm (default: naive)
 ```
 
 ---
@@ -65,9 +93,9 @@ grep-project/
 ├── mygrep/
 │   ├── __init__.py      # Makes mygrep a Python package
 │   ├── cli.py           # Argument parsing with argparse
-│   ├── matcher.py       # Naive string matching algorithm
-│   ├── searcher.py      # Opens files and collects matching lines
-│   └── output.py        # Formats and prints results
+│   ├── matcher.py       # Naive, KMP, and Boyer-Moore matching algorithms
+│   ├── searcher.py      # Opens files, collects matching lines, recursive search
+│   └── output.py        # Formats and prints results (count mode, color)
 ├── tests/
 │   ├── __init__.py
 │   └── test_basic.py    # Unit tests (Python unittest)
@@ -100,10 +128,10 @@ python -m unittest discover -s tests
 
 ## Roadmap
 
-- **Phase 1 (current):** Basic search, `-n` line numbers, argparse CLI
-- **Phase 2:** `-i` case-insensitive, `-v` invert match, `-c` count mode
-- **Phase 3:** Regex support, recursive directory search (`-r`), colour output
-- **Phase 4:** Performance — KMP / Boyer-Moore algorithms
+- **Phase 1 (complete):** Basic search, `-n` line numbers, argparse CLI
+- **Phase 2 (complete):** `-i` case-insensitive, `-v` invert match, `-c` count mode
+- **Phase 3 (complete):** `-E` regex support, `-r` recursive directory search, `--color` output
+- **Phase 4 (complete):** Performance — KMP and Boyer-Moore algorithms, `--algorithm` flag
 
 ---
 
