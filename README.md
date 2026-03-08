@@ -31,6 +31,9 @@ cd grep-project
 # Basic search — print all lines that contain "hello"
 python main.py "hello" sample.txt
 
+# Or run as a Python module (works the same way)
+python -m mygrep "hello" sample.txt
+
 # Show line numbers with -n
 python main.py -n "pattern" sample.txt
 
@@ -92,6 +95,7 @@ optional arguments:
 grep-project/
 ├── mygrep/
 │   ├── __init__.py      # Makes mygrep a Python package
+│   ├── __main__.py      # Allows running as: python -m mygrep
 │   ├── cli.py           # Argument parsing with argparse
 │   ├── matcher.py       # Naive, KMP, and Boyer-Moore matching algorithms
 │   ├── searcher.py      # Opens files, collects matching lines, recursive search
